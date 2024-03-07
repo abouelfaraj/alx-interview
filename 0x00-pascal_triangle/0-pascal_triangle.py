@@ -8,7 +8,7 @@ def pascal_triangle(n):
     """Mehode generate pascal triangle"""
     k = []
     if n <= 0:
-        return 
+        return
     k = [[1]]
     for i in range(1, n):
         temp = [1]
