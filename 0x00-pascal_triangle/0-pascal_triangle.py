@@ -1,11 +1,9 @@
 #!/usr/bin/python3
-"""
-Modulw pascal trinagle
-"""
+"""Modulw pascal trinagle."""
 
 
 def pascal_triangle(n):
-    """Mehode generate pascal triangle"""
+    """Mehode generate pascal triangle."""
     k = []
     if n <= 0:
         return
