@@ -1,5 +1,9 @@
+#!/usr/bin/python3
+"""Module determines canUlcockAll function."""
+
+
 def canUnlockAll(boxes):
-    """Function that determines if all the boxes can be opened."""
+    """Methode that determines if all the boxes can be opened."""
     if not isinstance(boxes, list):
         return False
     if not all(isinstance(bx, list) for bx in boxes):
