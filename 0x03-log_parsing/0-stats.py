@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """
+Module
 """
 
 
@@ -25,11 +26,11 @@ signal.signal(signal.SIGINT, signal_handler)
 for i, line in enumerate(sys.stdin):
     try:
         parts = line.strip().split()
-        ip, date, _, status_code, file_size = part[0], parts[3][1:], parts[5], parts[8], int(parts[9])
+        ip, date, _, status_code, file_size = parts[0], parts[3][1:], parts[5], parts[8], int(parts[9])
         statusCount[status_code] += 1
 
         if (i + 1) % 10 == 0:
-            print_stats
+            print_stats()
     except Exception as e:
         continue
 
