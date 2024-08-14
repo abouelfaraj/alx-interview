@@ -1,37 +1,46 @@
 #!/usr/bin/python3
-"""
-Module
-"""
 
+""" script that reads stdin line by line and computes metrics """
 
 import sys
-import signal
-from collections import defaultdict
 
-statusCount = defaultdict(int)
 
-total = 0
+def printStatus(dic, size):
+    """ Prints information """
+    print("File size: {:d}".format(size))
+    for i in sorted(dic.keys()):
+        if dic[i] != 0:
+            print("{}: {:d}".format(i, dic[i]))
 
-def signal_handler(sig, frame):
-    print_stats()
-    sys.exit(0)
 
-def print_stats():
-    print("File size:", total)
-    for code in sorted(statusCount.keys()):
-        print(f"{code}: {statusCount[code]}")
+# sourcery skip: use-contextlib-suppress
+statusCodes = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+               "404": 0, "405": 0, "500": 0}
 
-signal.signal(signal.SIGINT, signal_handler)
+count = 0
+size = 0
 
-for i, line in enumerate(sys.stdin):
-    try:
-        parts = line.strip().split()
-        ip, date, _, status_code, file_size = parts[0], parts[3][1:], parts[5], parts[8], int(parts[9])
-        statusCount[status_code] += 1
+try:
+    for line in sys.stdin:
+        if count != 0 and count % 10 == 0:
+            printStatus(statusCodes, size)
 
-        if (i + 1) % 10 == 0:
-            print_stats()
-    except Exception as e:
-        continue
+        stlist = line.split()
+        count += 1
 
-print_stats()
+        try:
+            size += int(stlist[-1])
+        except Exception:
+            pass
+
+        try:
+            if stlist[-2] in statusCodes:
+                statusCodes[stlist[-2]] += 1
+        except Exception:
+            pass
+    printStatus(statusCodes, size)
+
+
+except KeyboardInterrupt:
+    printStatus(statusCodes, size)
+    raise
